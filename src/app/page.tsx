@@ -17,7 +17,7 @@ function page() {
         <span
           className="fixed bottom-10 items-center-translate-x-1/2 bg-black/80 text-white px-6 py-3 rounded-full font-bold text-lg shadow-lg border-2 border-dotted border-white animate-float z-[1000] cursor-pointer transition-all duration-300 hover:bg-white hover:text-purple-400 hover:shadow-2xl hover:scale-110"
         >
-          Get Started
+          Lets Start
         </span>
       </Link>
       <style>{`
