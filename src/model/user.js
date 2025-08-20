@@ -4,7 +4,15 @@ const UserSchema = new mongoose.Schema(
   {
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+   avatar: {
+    type: String,
+    default: function() {
+      return `https://api.dicebear.com/7.x/avataaars/svg?seed=${this.username}`;
+    }
+  },
+    isOnline: { type: Boolean, default: false },
+    lastSeen: { type: Date, default: Date.now }
   },
   { timestamps: true }
 );
