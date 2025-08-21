@@ -1,16 +1,20 @@
 "use client"
 import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import ThemeToggle from "@/components/ThemeToggle";
 
 
 export default function SignupPage() {
-     const[formData , setFormData] = useState({
-        username: "",
-        email: "",
-        password: ""
-     });
-	 const[loading , setLoading] = useState(false);
-	 const [error , setError] = useState<string | null>(null);
-	 const [success, setSuccess] = useState<string | null>(null);
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: ""
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
 	 const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {name, value} = e.target;
@@ -43,6 +47,9 @@ export default function SignupPage() {
       } else {
         setSuccess(data.msg || "User created successfully");
         setFormData({ username: "", email: "", password: "" });
+        setTimeout(() => {
+          router.push("/auth/Login");
+        }, 1500);
       }
     } catch (err) {
       setError("Network or server error");
@@ -55,82 +62,162 @@ export default function SignupPage() {
 
 	 
 
-	return (
-		<main className="font-montserrat min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
-			<div className="w-full max-w-3xl mx-auto bg-white/90 dark:bg-gray-900/90 rounded-3xl shadow-2xl p-6 sm:p-8 md:p-12 backdrop-blur-xl border border-gray-200/50 dark:border-gray-800/50 flex flex-col items-center transform hover:scale-[1.01] transition-all duration-300">
-				<div className="mb-6 flex flex-col items-center">
-					<span className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg mb-3 transform hover:scale-110 transition-transform duration-300 hover:rotate-3">
-						<svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 21v-2a4 4 0 00-8 0v2M12 11a4 4 0 100-8 4 4 0 000 8zm6 2a6 6 0 11-12 0 6 6 0 0112 0z" /></svg>
-					</span>
-					<h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">Create your ByteRipple account</h1>
-				</div>
-				{success && (
-					<div className="mb-4 p-3 rounded-lg bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300">
-						{success}
-					</div>
-				)}
-				{error && (
-					<div className="mb-4 p-3 rounded-lg bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300">
-						{error}
-					</div>
-				)}
-				<form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full max-w-xl mx-auto">
-					<div>
-						<label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username</label>
-						<input 
-							onChange={handleChange}
-							type="text" 
-							id="username"
-							name="username" 
-							className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-600 transition-all duration-300 hover:border-blue-400 dark:hover:border-purple-400" 
-							placeholder="Enter your name" 
-						/>
-					</div>
-					<div>
-						<label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
-						<input 
-							onChange={handleChange}
-							type="email" 
-							id="email" 
-							name="email"
-							className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
-							placeholder="Enter your email" 
-						/>
-					</div>
-					<div>
-						<label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
-						<input onChange={(e)=> setFormData({...formData, password: e.target.value})}
-                         type="password" id="password" className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Create a password" />
-					</div>
-					<button 
-					    disabled={loading}
-						type="submit" 
-						className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold shadow-lg hover:from-purple-500 hover:to-blue-500 transition-all duration-300 transform hover:scale-[1.02] active:scale-95 hover:shadow-xl focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-					>
-						{loading ? 'Signing Up...' : 'Sign Up'}
-					</button>
-				</form>
-				<div className="flex items-center w-full my-6">
-					<div className="flex-grow h-px bg-gray-300 dark:bg-gray-700" />
-					<span className="mx-4 text-xs text-gray-400 dark:text-gray-500">or</span>
-					<div className="flex-grow h-px bg-gray-300 dark:bg-gray-700" />
-				</div>
-				<div className="flex flex-col gap-3 w-full max-w-xl mx-auto">
-					<button className="w-full py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2">
-						<svg className="w-5 h-5" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M24 9.5c3.54 0 6.72 1.22 9.22 3.22l6.9-6.9C36.44 2.36 30.55 0 24 0 14.61 0 6.27 5.48 1.82 13.44l8.06 6.27C12.36 13.13 17.73 9.5 24 9.5z"/><path fill="#34A853" d="M46.18 24.56c0-1.64-.15-3.22-.44-4.76H24v9.04h12.44c-.54 2.9-2.18 5.36-4.64 7.04l7.18 5.59C43.73 37.36 46.18 31.44 46.18 24.56z"/><path fill="#FBBC05" d="M9.88 28.09c-1.13-3.36-1.13-6.97 0-10.33l-8.06-6.27C.64 15.36 0 19.55 0 24c0 4.45.64 8.64 1.82 12.51l8.06-6.27z"/><path fill="#EA4335" d="M24 48c6.55 0 12.44-2.16 16.9-5.89l-7.18-5.59c-2.01 1.35-4.59 2.15-7.72 2.15-6.27 0-11.64-3.63-14.12-8.94l-8.06 6.27C6.27 42.52 14.61 48 24 48z"/></g></svg>
-						Sign up with Google
-					</button>
-					<button className="w-full py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-medium shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2">
-						<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.41 2.86 8.16 6.84 9.49.5.09.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.1-1.46-1.1-1.46-.9-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85.004 1.71.115 2.51.337 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85v2.74c0 .27.16.58.67.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
-						Sign up with Github
-								</button>
-							</div>
-							<div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-								Already have an account? <a href="/auth/Login" className="text-blue-400 dark:text-purple-400 font-semibold hover:underline">Login</a>
-							</div>
-						</div>
-					</main>
-			
-	)
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 dark:from-gray-900 dark:to-purple-900 relative overflow-hidden px-4">
+      <ThemeToggle />
+      <div className="absolute inset-0 bg-black/10 dark:bg-black/30"></div>
+      
+      <div className="absolute top-4 left-4 z-20">
+        <Link href="/" className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors p-2 sm:p-0">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span className="hidden sm:inline">Back to Home</span>
+        </Link>
+      </div>
+      
+      <div className="relative z-10 w-full max-w-md">
+        <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 sm:p-8">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-2">Join ByteRipple</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300">Create your account to start chatting</p>
+          </div>
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm flex items-center">
+              <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-600 text-sm flex items-center">
+              <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              {success} Redirecting to login...
+            </div>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <input
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  type="text"
+                  id="username"
+                  className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  placeholder="Choose a username"
+                  required
+                  autoFocus
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                  </svg>
+                </div>
+                <input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  type="email"
+                  id="email"
+                  className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <input
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  type="password"
+                  id="password"
+                  className="pl-10 w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  placeholder="Create a strong password"
+                  required
+                />
+              </div>
+              <p className="mt-1 text-xs text-gray-500">Use 8 or more characters with a mix of letters and numbers</p>
+            </div>
+            
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Creating account...
+                </span>
+              ) : (
+                "Create Account"
+              )}
+            </button>
+          </form>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or sign up with</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-all">
+              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Google
+            </button>
+            <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-all">
+              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd"/>
+              </svg>
+              GitHub
+            </button>
+          </div>
+
+          <p className="mt-6 text-center text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link href="/auth/Login" className="font-medium text-purple-600 hover:text-purple-500">
+              Sign in instead
+            </Link>
+          </p>
+        </div>
+      </div>
+    </main>
+  );
 }
 

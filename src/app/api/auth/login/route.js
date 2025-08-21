@@ -41,7 +41,8 @@ export async function POST(request) {
     await user.save();
 
     // remove sensitive fields
-    const { password: _, __v, ...userSafe } = user.toObject();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, __v: __, ...userSafe } = user.toObject();
 
     return NextResponse.json(
       { msg: 'Login successful', user: userSafe },
