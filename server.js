@@ -18,11 +18,13 @@ const handle = app.getRequestHandler();
 const activeSessions = new Map();
 const userSockets = new Map();
 
-// Create server with Next.js request handler
-const server = createServer((req, res) => {
-  const parsedUrl = parse(req.url, true);
-  handle(req, res, parsedUrl);
-});
+// Prepare Next.js app first
+app.prepare().then(() => {
+  // Create server with Next.js request handler
+  const server = createServer((req, res) => {
+    const parsedUrl = parse(req.url, true);
+    handle(req, res, parsedUrl);
+  });
 
 const io = new Server(server, {
   cors: {
@@ -162,5 +164,10 @@ const io = new Server(server, {
   const port = parseInt(process.env.PORT || '3000', 10);
   server.listen(port, () => {
     console.log(`> Ready on http://localhost:${port}`);
+    console.log('> Socket.io server is running');
   });
+}).catch((err) => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
+});
 
