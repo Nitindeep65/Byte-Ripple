@@ -15,9 +15,12 @@ export interface ChatData {
 export interface Message {
   id: string;
   senderId: string;
+  receiverId: string;
   content: string;
+  text?: string;  // For socket messages
+  isReceived?: boolean;
   timestamp: Date;
-  type: string;
+  type: 'text' | 'image' | 'file';
 }
 
 export interface User {
