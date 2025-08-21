@@ -10,7 +10,7 @@ export const initSocket = (userId: string) => {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
-      path: '/api/socketio',
+      path: '/socket.io',
     });
 
     // Add error handling
@@ -25,8 +25,10 @@ export const initSocket = (userId: string) => {
     });
 
     socket.on('connect', () => {
+      console.log('Socket connected successfully');
       // Authenticate socket after connection
       socket?.emit('authenticate', userId);
+      console.log('Authenticating with userId:', userId);
     });
   } else {
     // Re-authenticate if socket exists but user changed
